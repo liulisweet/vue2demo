@@ -1,14 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import KunView from '../views/KunView.vue';
-import YuView from '../views/YuView.vue'
-import TingView from '../views/TingView.vue';
 
 Vue.use(VueRouter)
 
 const routes = [
-
+  {
+    path: '/container',
+    name: 'container',
+    component: () => import('../views/ContainerView.vue'),
+  },
+  {
+    path: '/nav',
+    name: 'nav',
+    component: () => import('../views/NavView.vue'),
+  },
   {
     path: '/',
     name: 'home',
