@@ -6,33 +6,6 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/component',
-    name: 'component',
-    component: () => import('../views/ComponentView.vue'),
-    children: [{
-      path: 'table',
-      component: () => import('../views/TableView.vue'),
-    }, {
-      path: 'form',
-      component: () => import('../views/FormView.vue'),
-    },
-    {
-      path: 'container',
-      component: () => import('../views/ContainerView.vue'),
-    },]
-  },
-  {
-    path: '/container',
-    name: 'container',
-    component: () => import('../views/ContainerView.vue'),
-
-  },
-  {
-    path: '/nav',
-    name: 'nav',
-    component: () => import('../views/NavView.vue'),
-  },
-  {
     path: '/',
     name: 'home',
     component: HomeView

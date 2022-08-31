@@ -1,4 +1,4 @@
-# vue-pro
+# mint-project
 
 ## Project setup
 ```
