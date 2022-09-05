@@ -51,7 +51,6 @@ export default {
       pwdState: "",
       repwd: "",
       repwdState: "",
-      check: true,
     };
   },
   methods: {
@@ -60,35 +59,46 @@ export default {
       var pattern = /^\w{3,15}$/;
       if (pattern.test(this.name)) {
         this.nameState = "success";
+        return true;
       } else {
         this.nameState = "error";
-        this.check = false;
+        return false;
       }
     },
     checkPwd() {
       var pattern = /^\d{6}/;
       if (pattern.test(this.pwd)) {
         this.pwdState = "success";
+        return true;
       } else {
         this.pwdState = "error";
-        this.check = false;
+        return false;
       }
     },
     checkRepwd() {
       var pattern = /^\d{6}/;
       if (pattern.test(this.repwd) && this.pwd == this.repwd) {
         this.repwdState = "success";
+        return true;
       } else {
         this.repwdState = "error";
-        this.check = false;
+        return false;
       }
     },
     checkForm() {
-      this.checkName();
-      this.checkPwd();
-      this.checkRepwd();
-      if (this.check) {
-        console.log("发送表单");
+      if (this.checkName()&&this.checkPwd()&&this.checkRepwd()) {
+        // 发送注册请求，执行注册业务
+        let params = `username=${this.name}&password=${this.pwd}`;
+        this.axios.post("/register", params).then((res) => {
+          console.log("注册业务", res);
+          if (res.data.code == 200) {
+            // 业务码200 注册成功
+            this.$router.push("/login");
+          } else if (res.data.code == 201) {
+            // 用户已存在
+            this.$messagebox("提示", "用户已存在，请重试");
+          }
+        });
       } else {
         console.log("不匹配");
       }

@@ -2,7 +2,7 @@
   <div>
     <mt-header title="学前端,到学问">
       <router-link to="/home/index" slot="left">
-        <mt-button icon="back" ></mt-button>
+        <mt-button icon="back"></mt-button>
       </router-link>
       <router-link to="/register" slot="right">注册</router-link>
     </mt-header>
@@ -70,6 +70,19 @@ export default {
       this.checkPwd();
       if (this.check) {
         console.log("发送表单");
+        // 发送登录请求，执行登录业务
+        let params = `username=${this.name}&password=${this.pwd}`;
+        this.axios.post("/login", params).then((res) => {
+          console.log("登录业务", res);
+          if (res.data.code == 200) {
+            this.$store.commit("updateUserInfo", this.name);
+            // 业务码200 注册成功
+            this.$router.push("/");
+          } else if (res.data.code == 201) {
+            //
+            this.$messagebox("提示", "账号或密码错误，请重试");
+          }
+        });
       } else {
         console.log("不匹配");
       }

@@ -2,9 +2,12 @@
   <div>
     <!-- 标题栏 -->
     <mt-header fixed flaex title="学前端,到学问">
-      <div slot="right">
-        <router-link to="/register" class="link">注册 </router-link>
+      <div v-if="$store.state.user" slot="right">
+        欢迎:{{ $store.state.user }}
+      </div>
+      <div v-else slot="right">
         <router-link to="/login" class="link">登录</router-link>
+        <router-link to="/register" class="link">注册 </router-link>
       </div>
     </mt-header>
     <mt-navbar style="margin-top: 40px" fixed v-model="selected">
@@ -46,29 +49,20 @@ export default {
   components: {
     ArticleItem,
   },
-  watch: {
-    selected(newValue, oldValue) {
-      window.scrollTo(0, 0);
-      this.articles = [];
-      this.page = 1;
-      this.loadArticles();
-    },
-  },
-  //组件挂载完毕后执行
-  mounted() {
-    this.getCats();
-    this.loadArticles();
-  },
   data() {
     return {
       selected: 1,
       cats: null,
       articles: [],
       page: 1,
+      stopLoading: false,
     };
   },
   methods: {
     loadMore() {
+      if (this.stopLoading) {
+        return;
+      }
       this.page++;
       this.loadArticles();
     },
@@ -90,6 +84,30 @@ export default {
           this.$indicator.close();
         });
     },
+  },
+  /** 当前页面转到前台时执行 keepAlive配套生命周期 */
+  activated() {
+    console.log("activated...");
+    this.stopLoading = false; // 恢复加载更多功能
+  },
+  /** 当前页面从前台转到后台时执行 keepAlive配套生命周期 */
+  deactivated() {
+    console.log("deactivated...");
+    this.stopLoading = true; // 停止加载更多功能
+  },
+  watch: {
+    selected(newValue, oldValue) {
+      window.scrollTo(0, 0);
+      this.articles = [];
+      this.page = 1;
+      this.loadArticles();
+    },
+  },
+
+  //组件挂载完毕后执行
+  mounted() {
+    this.getCats();
+    this.loadArticles();
   },
 };
 </script>

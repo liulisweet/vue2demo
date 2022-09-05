@@ -26,9 +26,16 @@
 
 <script>
 export default {
+  activated() {
+    // 回到当前页时，修改tabSelected默认选中项
+    this.tabSelected = this.$route.path.split("/")[2];
+  },
   watch: {
     tabSelected(to, from) {
       console.log(`切换了底部选项卡，从 ${from} 跳转到 ${to} `);
+      if (to == this.$route.path.split("/")[2]) {
+        return; // 防止路由重复跳转错误
+      }
       if (to == "me") {
         this.$router.push(`/home/me`);
       } else if (to == "index") {

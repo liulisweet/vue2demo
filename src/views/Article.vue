@@ -3,9 +3,7 @@
     <!-- 顶部导航开始 -->
     <header>
       <mt-header title="学前端，上学问">
-        <router-link slot="left" to="/">
-          <mt-button icon="back"></mt-button>
-        </router-link>
+        <mt-button slot="left" @click="$router.go(-1)" icon="back"></mt-button>
       </mt-header>
     </header>
     <!-- 导航导航结束 -->
@@ -15,7 +13,9 @@
       <div class="question-header">
         <div class="question-header-title">{{ article.subject }}</div>
         <div class="question-header-datetime">
-          {{ moment.unix(article.created_at).format("lll") }}
+          {{
+            moment.unix(article.created_at).format("YYYY年MM月DD日 HH:mm:ss")
+          }}
         </div>
       </div>
       <!-- 标题结束 -->
@@ -44,21 +44,6 @@
 </template>
 <script>
 export default {
-  filters: {
-    formatDate: function (date) {
-      var date = new Date(date);
-      var YY = date.getFullYear();
-      var MM =
-        date.getMonth() + 1 < 10
-          ? "0" + (date.getMonth() + 1)
-          : date.getMonth() + 1;
-      var DD = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-      var hh = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-      var mm =
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-      return `${YY}年${MM}月${DD}日 ${hh}:${mm}`;
-    },
-  },
   mounted() {
     let id = this.$route.query.id;
     this.axios.get(`/detail?id=${id}`).then((res) => {

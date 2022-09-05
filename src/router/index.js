@@ -47,6 +47,9 @@ const routes = [
       {
         path: 'index',
         component: () => import('../views/Index.vue'),
+        meta:{
+          keepAlive: true,
+        }
       },
       {
         path: 'me',
